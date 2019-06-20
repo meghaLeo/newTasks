@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TasksDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="TasksDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Parent_Task" EntityType="TasksDBModel.Parent_Task" />
+    <EntitySet Name="Tasks" EntityType="TasksDBModel.Task" />
+    <AssociationSet Name="FK__Task__Parent_ID__182C9B23" Association="TasksDBModel.FK__Task__Parent_ID__182C9B23">
+      <End Role="Parent_Task" EntitySet="Parent_Task" />
+      <End Role="Task" EntitySet="Tasks" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Parent_Task">
+    <Key>
+      <PropertyRef Name="Parent_ID" />
+    </Key>
+    <Property Name="Parent_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Parent_Task_Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Tasks" Relationship="TasksDBModel.FK__Task__Parent_ID__182C9B23" FromRole="Parent_Task" ToRole="Task" />
+  </EntityType>
+  <EntityType Name="Task">
+    <Key>
+      <PropertyRef Name="Task_ID" />
+    </Key>
+    <Property Name="Task_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Parent_ID" Type="Int32" />
+    <Property Name="Task_Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="Start_Date" Type="DateTime" Precision="3" />
+    <Property Name="End_Date" Type="DateTime" Precision="3" />
+    <Property Name="Priority" Type="Int32" />
+    <NavigationProperty Name="Parent_Task" Relationship="TasksDBModel.FK__Task__Parent_ID__182C9B23" FromRole="Task" ToRole="Parent_Task" />
+  </EntityType>
+  <Association Name="FK__Task__Parent_ID__182C9B23">
+    <End Type="TasksDBModel.Parent_Task" Role="Parent_Task" Multiplicity="0..1" />
+    <End Type="TasksDBModel.Task" Role="Task" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Parent_Task">
+        <PropertyRef Name="Parent_ID" />
+      </Principal>
+      <Dependent Role="Task">
+        <PropertyRef Name="Parent_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

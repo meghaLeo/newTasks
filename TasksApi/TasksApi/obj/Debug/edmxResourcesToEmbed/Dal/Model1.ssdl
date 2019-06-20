@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TasksDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Parent_Task">
+    <Key>
+      <PropertyRef Name="Parent_ID" />
+    </Key>
+    <Property Name="Parent_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Parent_Task" Type="varchar" MaxLength="500" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TasksDB.dbo.Task' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Task">
+    <Key>
+      <PropertyRef Name="Task_ID" />
+    </Key>
+    <Property Name="Task_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Parent_ID" Type="int" />
+    <Property Name="Task_Description" Type="varchar" MaxLength="500" />
+    <Property Name="Start_Date" Type="datetime" />
+    <Property Name="End_Date" Type="datetime" />
+    <Property Name="Priority" Type="int" />
+  </EntityType>
+  <Association Name="FK__Task__Parent_ID__182C9B23">
+    <End Role="Parent_Task" Type="Self.Parent_Task" Multiplicity="0..1" />
+    <End Role="Task" Type="Self.Task" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Parent_Task">
+        <PropertyRef Name="Parent_ID" />
+      </Principal>
+      <Dependent Role="Task">
+        <PropertyRef Name="Parent_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TasksDBModelStoreContainer">
+    <EntitySet Name="Parent_Task" EntityType="Self.Parent_Task" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Task" EntityType="Self.Task" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Task].[Task_ID] AS [Task_ID], 
+    [Task].[Parent_ID] AS [Parent_ID], 
+    [Task].[Task_Description] AS [Task_Description], 
+    [Task].[Start_Date] AS [Start_Date], 
+    [Task].[End_Date] AS [End_Date], 
+    [Task].[Priority] AS [Priority]
+    FROM [dbo].[Task] AS [Task]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK__Task__Parent_ID__182C9B23" Association="Self.FK__Task__Parent_ID__182C9B23">
+      <End Role="Parent_Task" EntitySet="Parent_Task" />
+      <End Role="Task" EntitySet="Task" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
